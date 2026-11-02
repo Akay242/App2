@@ -41,6 +41,11 @@
     "scheme": "salonbonus",
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6d10374f-9e49-4eee-bf61-ecba8d902f40"
+      }
     }
   }
 }
