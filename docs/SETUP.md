@@ -13,9 +13,22 @@ werden, weil die Prüfung dauern kann.
 4. Im Projekt links **SQL Editor** öffnen und nacheinander ausführen:
    1. den Inhalt von `supabase/migrations/20261102000000_initial_schema.sql`
    2. den Inhalt von `supabase/seed.sql` (Beispiel-Preisliste, optional)
-5. Unter **Project Settings → API** die **Project URL** und den
+5. **E-Mail-Vorlagen auf Code umstellen** (die App fragt einen 6-stelligen Code ab, keinen Link):
+   Links **Authentication → Emails → Templates**, dann bei **Confirm signup** und bei **Magic link**
+   jeweils Betreff `Dein Anmeldecode` und als Inhalt den Text aus
+   `supabase/templates/confirmation.html` einfügen und speichern.
+   Wichtig ist der Platzhalter `{{ .Token }}`, das ist der Code.
+6. Unter **Project Settings → API** die **Project URL** und den
    **Publishable key** kopieren.
-6. In `app/` die Datei `.env.example` nach `.env.local` kopieren und die beiden Werte eintragen.
+7. In `app/` die Datei `.env.example` nach `.env.local` kopieren und die beiden Werte eintragen.
+
+### E-Mail-Versand für echte Kunden (vor dem Start, kostenlos)
+
+Der eingebaute E-Mail-Versand von Supabase ist nur zum Testen gedacht. Er schickt nur
+sehr wenige E-Mails pro Stunde und nur an Adressen von Mitgliedern deines Supabase-Teams.
+Vor dem Start mit echten Kunden richten wir deshalb einen eigenen Versand ein, z. B.
+**Resend** (kostenlos bis 3.000 E-Mails/Monat): **Authentication → Emails → SMTP Settings**.
+Dafür brauchst du eine eigene Domain für den Absender (z. B. `info@dein-salon.de`).
 
 ### Sich selbst zum Admin machen
 

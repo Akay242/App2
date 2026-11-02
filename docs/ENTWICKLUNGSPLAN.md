@@ -70,7 +70,7 @@ stehen in der Tabelle `salon_settings` und lassen sich später ohne neuen Code �
 
 ## 4. Phasen
 
-### Phase 1 – Grundlagen ✅ (dieser Stand)
+### Phase 1 – Grundlagen ✅
 - [x] Projektstruktur: `app/` (Expo), `supabase/` (Datenbank), `docs/`
 - [x] Expo-App mit Expo Router, TypeScript, Supabase-Client und Platzhalter-Design
 - [x] Datenbankschema mit Rechten (RLS), Stempellogik, 1-Scan-pro-Tag-Sperre, Einlösen von Belohnungen
@@ -78,12 +78,14 @@ stehen in der Tabelle `salon_settings` und lassen sich später ohne neuen Code �
 - [x] Lokaler Datenbank-Test (`supabase/tests/`)
 - [ ] **Inhaber:** Konten anlegen, siehe [SETUP.md](SETUP.md)
 
-### Phase 2 – Kernfunktion
-- Registrierung und Login per E-Mail-Code
-- Kunden-Startseite: persönlicher QR-Code und Stempelkarte (x von 12)
-- Liste der freigeschalteten Belohnungen
-- Admin-Modus: Kamera-Scanner, Ergebnis mit Stempelstand, Belohnung einlösen
-- Erster Test auf echten Handys über eine Development-Build
+### Phase 2 – Kernfunktion ✅ (dieser Stand)
+- [x] Registrierung und Login per E-Mail-Code, danach einmalig Namen abfragen
+- [x] Kunden-Startseite: persönlicher QR-Code und Stempelkarte (x von 12), aktualisiert sich alle 10 s
+- [x] Liste der freigeschalteten Belohnungen
+- [x] Admin-Modus: Kamera-Scanner, Ergebnis mit Stempelstand, Belohnung einlösen
+- [x] Rollen-abhängige Navigation (Kunde sieht nie den Scanner)
+- [x] Lokales Supabase (`supabase/config.toml`) mit deutschen Code-E-Mails, End-to-End-Test im Browser
+- [ ] Erster Test auf echten Handys (braucht Supabase-Zugangsdaten und einen Development-Build)
 
 ### Phase 3 – Inhalte und Web-Dashboard
 - Preisliste und Salon-Infos (Adresse, Öffnungszeiten, Anruf-Button) in der App
@@ -108,4 +110,5 @@ stehen in der Tabelle `salon_settings` und lassen sich später ohne neuen Code �
 - Name, Logo und Farben des Salons (vor Phase 5)
 - Konkretes Extra beim 6. Besuch (in `salon_settings.small_reward_label` einstellbar)
 - Google-Bewertungslink des Salons (Phase 4)
+- Eigener E-Mail-Versand (SMTP, z. B. Resend) und Absender-Domain vor dem Start
 - Apple-Konto als Organisation: D-U-N-S-Nummer früh beantragen
