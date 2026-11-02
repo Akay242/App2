@@ -2,6 +2,7 @@
   "expo": {
     "name": "Salon Bonus",
     "slug": "salon-bonus",
+    "owner": "akay242",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
