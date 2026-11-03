@@ -11,7 +11,10 @@ wenn die App später zusätzlich in den App Store / Google Play soll.
 1. Auf <https://supabase.com> registrieren und **New project** wählen.
 2. Region **Central EU (Frankfurt)** wählen (Datenschutz, kurze Wege).
 3. Ein sicheres Datenbank-Passwort vergeben und gut aufbewahren (nicht in die App!).
-4. Im Projekt links **SQL Editor** öffnen und nacheinander ausführen:
+4. Im Projekt links **SQL Editor** öffnen und ausführen.
+   **Am einfachsten (auch am Handy):** den Inhalt von `supabase/setup_komplett.sql` in **einem**
+   Schritt ausführen – er enthält alle Migrationen in der richtigen Reihenfolge.
+   Alternativ einzeln:
    1. alle Dateien aus `supabase/migrations/` **in der Reihenfolge ihrer Namen**
       (`20261102000000_initial_schema.sql`, `20261103000000_admin_overview.sql`,
       `20261104000000_marketing.sql`, …)
