@@ -12,6 +12,8 @@ const NAV = [
   { href: '/', label: 'Übersicht' },
   { href: '/kunden/', label: 'Kunden' },
   { href: '/leistungen/', label: 'Preise & Leistungen' },
+  { href: '/push/', label: 'Push-Nachrichten' },
+  { href: '/bewertungen/', label: 'Bewertungen' },
   { href: '/einstellungen/', label: 'Einstellungen' },
 ];
 

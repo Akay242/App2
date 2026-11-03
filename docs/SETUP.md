@@ -12,7 +12,10 @@ werden, weil die Prüfung dauern kann.
 3. Ein sicheres Datenbank-Passwort vergeben und gut aufbewahren (nicht in die App!).
 4. Im Projekt links **SQL Editor** öffnen und nacheinander ausführen:
    1. alle Dateien aus `supabase/migrations/` **in der Reihenfolge ihrer Namen**
-      (`20261102000000_initial_schema.sql`, dann `20261103000000_admin_overview.sql`, …)
+      (`20261102000000_initial_schema.sql`, `20261103000000_admin_overview.sql`,
+      `20261104000000_marketing.sql`, …)
+      Falls bei der dritten Datei ein Fehler zu `pg_cron` oder `pg_net` kommt: unter
+      **Database → Extensions** die Erweiterungen `pg_cron` und `pg_net` einschalten und die Datei erneut ausführen.
    2. den Inhalt von `supabase/seed.sql` (Beispiel-Preisliste und Platzhalter-Adresse, optional)
 5. **E-Mail-Vorlagen auf Code umstellen** (die App fragt einen 6-stelligen Code ab, keinen Link):
    Links **Authentication → Emails → Templates**, dann bei **Confirm signup** und bei **Magic link**
@@ -91,7 +94,21 @@ Ein Organisationskonto vermeidet diese Hürde.
 5. **Deploy**. Danach ist das Dashboard unter einer Adresse wie `app2-xyz.vercel.app` erreichbar.
 6. Anmelden kann sich nur, wer in der App registriert ist **und** Admin ist (siehe oben).
 
-## 6. Später (Phase 4/5)
+## 6. Google-Bewertungslink (für die Bewertungsanfrage)
+
+In deinem **Google Unternehmensprofil** (Google Maps / Google Suche → dein Salon →
+„Rezensionen erhalten“ bzw. „Bewertungslink teilen“) den Link kopieren und im Dashboard unter
+**Einstellungen → Link zu Google-Bewertungen** eintragen. Ohne Link fragt die App trotzdem nach
+einer Bewertung, leitet aber nicht zu Google weiter.
+
+## 7. Push-Nachrichten auf dem iPhone
+
+Damit Push-Nachrichten auf iPhones ankommen, braucht Expo Zugang zu Apples Push-Dienst.
+Das richtet Expo beim ersten iOS-Build automatisch ein, dafür ist das **Apple Developer
+Program** nötig (Schritt 4). Für Android ist später ein kostenloser Firebase-Schlüssel nötig;
+das erledigen wir vor dem Android-Build.
+
+## 8. Später (Phase 5)
 
 - Link zu den Google-Bewertungen des Salons (Google Unternehmensprofil →
   „Rezensionen erhalten“).

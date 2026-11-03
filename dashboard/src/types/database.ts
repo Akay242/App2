@@ -127,6 +127,20 @@ export type AdminStats = {
   visits_today: number;
   visits_30d: number;
   rewards_redeemed_30d: number;
+  customers_with_push: number;
+  winback_sent_30d: number;
+  winback_redeemed_30d: number;
+  reviews_30d: number;
+  rating_avg_30d: number | null;
+};
+
+export type PushCampaign = {
+  id: string;
+  title: string;
+  body: string;
+  recipients: number;
+  created_by: string | null;
+  created_at: string;
 };
 
 export type Database = {
@@ -138,6 +152,7 @@ export type Database = {
       rewards: Table<Reward, 'customer_id' | 'type' | 'label'>;
       services: Table<Service, 'name' | 'price_cents'>;
       reviews: Table<Review, 'customer_id' | 'visit_id' | 'rating'>;
+      push_campaigns: Table<PushCampaign, 'title' | 'body'>;
     };
     Views: { [_ in never]: never };
     Functions: {
@@ -150,6 +165,8 @@ export type Database = {
       redeem_reward: { Args: { p_reward_id: string }; Returns: Reward };
       admin_customer_overview: { Args: Record<string, never>; Returns: CustomerOverview[] };
       admin_stats: { Args: Record<string, never>; Returns: Json };
+      admin_send_push: { Args: { p_title: string; p_body: string }; Returns: PushCampaign };
+      admin_push_audience: { Args: Record<string, never>; Returns: number };
     };
     Enums: {
       user_role: UserRole;

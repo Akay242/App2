@@ -3,6 +3,8 @@ import { useCallback, useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 
+import { PushPrompt } from '@/components/PushPrompt';
+import { ReviewCard } from '@/components/ReviewCard';
 import { RewardItem } from '@/components/RewardItem';
 import { StampCard } from '@/components/StampCard';
 import { Card, Loading, text } from '@/components/ui';
@@ -13,7 +15,12 @@ import type { Reward, SalonSettings } from '@/types/database';
 import { colors, spacing } from '@/theme';
 
 type Data = {
-  settings: Pick<SalonSettings, 'small_reward_at' | 'small_reward_label' | 'free_cut_label'>;
+  settings: Pick<
+    SalonSettings,
+    'small_reward_at' | 'small_reward_label' | 'free_cut_label' | 'google_review_url'
+  >;
+  /** Letzter Besuch der letzten 7 Tage, der noch nicht bewertet wurde */
+  reviewVisitId: string | null;
   stamps: number;
   stampsPerCycle: number;
   totalVisits: number;
@@ -22,6 +29,19 @@ type Data = {
 
 /** Wie oft die Startseite im Vordergrund neu lädt, damit ein frischer Stempel sofort erscheint. */
 const POLL_MS = 10_000;
+
+/** Bewertungsanfrage nur für Besuche der letzten 7 Tage. */
+const REVIEW_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
+
+const dismissedKey = (visitId: string) => `review_dismissed_${visitId}`;
+
+function isDismissed(visitId: string): boolean {
+  try {
+    return localStorage.getItem(dismissedKey(visitId)) === '1';
+  } catch {
+    return false;
+  }
+}
 
 export default function CustomerHome() {
   const { profile } = useAuth();
@@ -32,10 +52,11 @@ export default function CustomerHome() {
   const load = useCallback(async () => {
     if (!supabase || !profile) return;
     const now = new Date().toISOString();
-    const [settings, progress, rewards] = await Promise.all([
+    const since = new Date(Date.now() - REVIEW_WINDOW_MS).toISOString();
+    const [settings, progress, rewards, lastVisit] = await Promise.all([
       supabase
         .from('salon_settings')
-        .select('small_reward_at, small_reward_label, free_cut_label')
+        .select('small_reward_at, small_reward_label, free_cut_label, google_review_url')
         .single(),
       supabase.rpc('stamp_progress', { p_customer_id: profile.id }),
       supabase
@@ -44,11 +65,26 @@ export default function CustomerHome() {
         .eq('status', 'available')
         .or(`valid_until.is.null,valid_until.gt.${now}`)
         .order('earned_at'),
+      supabase
+        .from('visits')
+        .select('id')
+        .gt('created_at', since)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle(),
     ]);
-    const err = settings.error ?? progress.error ?? rewards.error;
+    const err = settings.error ?? progress.error ?? rewards.error ?? lastVisit.error;
     if (err || !settings.data) {
       setError(friendlyError(err));
       return;
+    }
+    let reviewVisitId: string | null = null;
+    if (lastVisit.data && !isDismissed(lastVisit.data.id)) {
+      const { count } = await supabase
+        .from('reviews')
+        .select('id', { count: 'exact', head: true })
+        .eq('visit_id', lastVisit.data.id);
+      if (count === 0) reviewVisitId = lastVisit.data.id;
     }
     const p = progress.data?.[0];
     setError(null);
@@ -58,6 +94,7 @@ export default function CustomerHome() {
       stampsPerCycle: p?.stamps_per_cycle ?? 12,
       totalVisits: p?.total_visits ?? 0,
       rewards: rewards.data ?? [],
+      reviewVisitId,
     });
   }, [profile]);
 
@@ -84,6 +121,21 @@ export default function CustomerHome() {
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.accent} />}
     >
       <Text style={text.title}>Hallo {profile.first_name}!</Text>
+
+      {data?.reviewVisitId && (
+        <ReviewCard
+          key={data.reviewVisitId}
+          customerId={profile.id}
+          visitId={data.reviewVisitId}
+          googleReviewUrl={data.settings.google_review_url}
+          onDone={() => {
+            try {
+              localStorage.setItem(dismissedKey(data.reviewVisitId!), '1');
+            } catch {}
+            setData({ ...data, reviewVisitId: null });
+          }}
+        />
+      )}
 
       <Card style={styles.qrCard}>
         <View style={styles.qrBox}>
@@ -119,6 +171,8 @@ export default function CustomerHome() {
               </>
             )}
           </Card>
+
+          <PushPrompt userId={profile.id} />
 
           <Text style={[text.muted, { textAlign: 'center' }]}>
             Besuche insgesamt: {data.totalVisits}

@@ -123,7 +123,7 @@ export default function Einstellungen() {
             <input {...text('address')} placeholder="Straße Nr., PLZ Ort" />
           </label>
           <label>
-            Link zu Google-Bewertungen (für Phase 4)
+            Link zu Google-Bewertungen (für die Bewertungsanfrage)
             <input type="url" {...text('google_review_url')} placeholder="https://g.page/r/…" />
           </label>
         </div>
@@ -181,7 +181,7 @@ export default function Einstellungen() {
       </section>
 
       <section className="card stack">
-        <h2>Rückholaktion (ab Phase 4 aktiv)</h2>
+        <h2>Rückholaktion (automatisch, täglich)</h2>
         <div className="grid-2">
           <label>
             Gutschein nach … Tagen ohne Besuch

@@ -6,6 +6,7 @@ const MESSAGES: Record<string, string> = {
   reward_not_available: 'Diese Belohnung wurde bereits eingelöst.',
   reward_expired: 'Diese Belohnung ist abgelaufen.',
   unknown_reward: 'Belohnung nicht gefunden.',
+  push_text_missing: 'Bitte Titel und Text eingeben.',
 };
 
 export function friendlyError(error: unknown): string {

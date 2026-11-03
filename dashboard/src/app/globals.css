@@ -114,3 +114,19 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
   .sidebar-footer { margin: 0 0 0 auto; flex-direction: row; align-items: center; }
   .main { padding: 20px 16px; }
 }
+
+.push-preview {
+  background: #2b2b2e;
+  border-radius: 16px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.push-app { font-size: 11px; color: var(--muted); letter-spacing: 0.5px; }
+.push-title { font-weight: 600; }
+.push-body { color: #e5e5e5; font-size: 14px; white-space: pre-wrap; }
+textarea { resize: vertical; }
+
+.bar { flex: 1; height: 8px; border-radius: 4px; background: var(--surface-2); overflow: hidden; }
+.bar-fill { height: 100%; background: var(--accent); }

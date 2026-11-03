@@ -87,7 +87,7 @@ stehen in der Tabelle `salon_settings` und lassen sich später ohne neuen Code �
 - [x] Lokales Supabase (`supabase/config.toml`) mit deutschen Code-E-Mails, End-to-End-Test im Browser
 - [ ] Erster Test auf echten Handys (braucht Supabase-Zugangsdaten und einen Development-Build)
 
-### Phase 3 – Inhalte und Web-Dashboard ✅ (dieser Stand)
+### Phase 3 – Inhalte und Web-Dashboard ✅
 - [x] App: Reiter „Karte“, „Preise“, „Salon“
 - [x] Preisliste nach Kategorien, Salon-Infos mit Anruf-Button, Kartenlink und Öffnungszeiten
 - [x] Web-Dashboard (Next.js, statisch, Login per E-Mail-Code, nur für Admins)
@@ -98,12 +98,19 @@ stehen in der Tabelle `salon_settings` und lassen sich später ohne neuen Code �
 - [x] End-to-End-Test: Änderungen im Dashboard erscheinen in der App
 - [ ] **Inhaber:** Dashboard auf Vercel veröffentlichen (siehe SETUP.md)
 
-### Phase 4 – Marketing
-- Push-Berechtigung und Push-Token speichern
-- Täglicher Job: Kunden ohne Besuch seit 6 Wochen bekommen einen 10-%-Gutschein und eine Push-Nachricht
-- Manuelle Push-Aktionen aus dem Dashboard
-- Bewertungsanfrage nach dem Scan mit Weiterleitung zu Google
-- Statistik im Dashboard: Neukunden, aktive Kunden, eingelöste Belohnungen, zurückgeholte Kunden
+### Phase 4 – Marketing ✅ (dieser Stand)
+- [x] App fragt nach Push-Erlaubnis (mit Erklärung) und speichert den Push-Token, beim Abmelden wird er gelöscht
+- [x] Täglicher Job (pg_cron, 09:00 UTC): Kunden ohne Besuch seit 6 Wochen bekommen einmal pro
+      Abwesenheit einen 10-%-Gutschein (14 Tage gültig) und eine Push-Nachricht.
+      Ohne Push-Erlaubnis steht der Gutschein trotzdem in der App
+- [x] Push-Versand direkt aus der Datenbank (pg_net → Expo Push Service), in Paketen à 100
+- [x] Dashboard: Push-Aktionen an alle Kunden mit Erlaubnis, mit Vorschau und Verlauf
+- [x] Bewertungsanfrage in der App für Besuche der letzten 7 Tage; 4–5 Sterne → Bitte um
+      Google-Bewertung, 1–3 Sterne → nur intern. Keine Belohnung für Bewertungen
+- [x] Dashboard: Bewertungsseite (Durchschnitt, Verteilung, Kommentare) und neue Kennzahlen
+      (Rückhol-Gutscheine, zurückgeholte Kunden, Ø Bewertung, Kunden mit Push)
+- [x] End-to-End-Test mit nachgebautem Push-Dienst
+- [ ] Test der echten Push-Nachrichten auf dem iPhone (braucht Apple-Entwicklerkonto)
 
 ### Phase 5 – Test und Veröffentlichung
 - Testphase mit einigen Stammkunden (TestFlight bzw. interner Google-Play-Test)

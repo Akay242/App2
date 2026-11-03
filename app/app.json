@@ -36,7 +36,9 @@
           "recordAudioAndroid": false,
           "barcodeScannerEnabled": true
         }
-      ]
+      ],
+      "expo-notifications",
+      "expo-font"
     ],
     "scheme": "salonbonus",
     "experiments": {

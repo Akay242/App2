@@ -59,8 +59,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [userId, fetchProfile]);
 
   const signOut = useCallback(async () => {
-    await supabase?.auth.signOut();
-  }, []);
+    if (!supabase) return;
+    // Nach dem Abmelden keine Nachrichten mehr an dieses Gerät schicken.
+    if (userId) await supabase.from('profiles').update({ push_token: null }).eq('id', userId);
+    await supabase.auth.signOut();
+  }, [userId]);
 
   const loading = !sessionLoaded || (userId !== null && profileUserId !== userId);
 
