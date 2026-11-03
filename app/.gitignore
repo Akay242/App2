@@ -39,3 +39,6 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# wird bei npm install aus node_modules kopiert (scripts/copy-zxing-wasm.js)
+public/zxing_reader.wasm

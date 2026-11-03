@@ -27,11 +27,27 @@
     "plugins": [
       "expo-router",
       "expo-status-bar",
-      "expo-sqlite"
+      "expo-sqlite",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Die Kamera wird benötigt, um die QR-Codes der Kunden zu scannen.",
+          "microphonePermission": false,
+          "recordAudioAndroid": false,
+          "barcodeScannerEnabled": true
+        }
+      ],
+      "expo-notifications",
+      "expo-font"
     ],
     "scheme": "salonbonus",
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6d10374f-9e49-4eee-bf61-ecba8d902f40"
+      }
     }
   }
 }

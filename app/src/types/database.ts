@@ -33,6 +33,10 @@ export type SalonSettings = {
   winback_after_days: number;
   winback_discount_percent: number;
   winback_valid_days: number;
+  imprint_owner: string | null;
+  imprint_email: string | null;
+  imprint_vat_id: string | null;
+  imprint_extra: string | null;
   updated_at: string;
 };
 
@@ -106,6 +110,44 @@ export type RecordVisitResult = {
   available_rewards: Pick<Reward, 'id' | 'type' | 'label' | 'discount_percent' | 'valid_until'>[];
 };
 
+/** Zeile aus admin_customer_overview() */
+export type CustomerOverview = {
+  id: string;
+  first_name: string | null;
+  last_name: string | null;
+  email: string | null;
+  role: UserRole;
+  created_at: string;
+  last_visit_at: string | null;
+  total_visits: number;
+  stamps_in_cycle: number;
+  available_rewards: number;
+};
+
+/** Antwort von admin_stats() */
+export type AdminStats = {
+  customers_total: number;
+  customers_new_30d: number;
+  customers_active_42d: number;
+  visits_today: number;
+  visits_30d: number;
+  rewards_redeemed_30d: number;
+  customers_with_push: number;
+  winback_sent_30d: number;
+  winback_redeemed_30d: number;
+  reviews_30d: number;
+  rating_avg_30d: number | null;
+};
+
+export type PushCampaign = {
+  id: string;
+  title: string;
+  body: string;
+  recipients: number;
+  created_by: string | null;
+  created_at: string;
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -115,6 +157,7 @@ export type Database = {
       rewards: Table<Reward, 'customer_id' | 'type' | 'label'>;
       services: Table<Service, 'name' | 'price_cents'>;
       reviews: Table<Review, 'customer_id' | 'visit_id' | 'rating'>;
+      push_campaigns: Table<PushCampaign, 'title' | 'body'>;
     };
     Views: { [_ in never]: never };
     Functions: {
@@ -125,6 +168,11 @@ export type Database = {
       };
       record_visit: { Args: { p_qr_token: string }; Returns: Json };
       redeem_reward: { Args: { p_reward_id: string }; Returns: Reward };
+      admin_customer_overview: { Args: Record<string, never>; Returns: CustomerOverview[] };
+      admin_stats: { Args: Record<string, never>; Returns: Json };
+      admin_send_push: { Args: { p_title: string; p_body: string }; Returns: PushCampaign };
+      admin_push_audience: { Args: Record<string, never>; Returns: number };
+      delete_my_account: { Args: Record<string, never>; Returns: undefined };
     };
     Enums: {
       user_role: UserRole;
