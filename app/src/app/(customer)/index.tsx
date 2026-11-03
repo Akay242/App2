@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 
+import { InstallHint } from '@/components/InstallHint';
 import { PushPrompt } from '@/components/PushPrompt';
 import { ReviewCard } from '@/components/ReviewCard';
 import { RewardItem } from '@/components/RewardItem';
@@ -173,6 +174,7 @@ export default function CustomerHome() {
           </Card>
 
           <PushPrompt userId={profile.id} />
+          <InstallHint />
 
           <Text style={[text.muted, { textAlign: 'center' }]}>
             Besuche insgesamt: {data.totalVisits}

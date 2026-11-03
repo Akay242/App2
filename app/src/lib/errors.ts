@@ -6,6 +6,8 @@ const MESSAGES: Record<string, string> = {
   reward_not_available: 'Diese Belohnung wurde bereits eingelöst.',
   reward_expired: 'Diese Belohnung ist abgelaufen.',
   unknown_reward: 'Belohnung nicht gefunden.',
+  last_admin: 'Das letzte Admin-Konto kann nicht gelöscht werden.',
+  not_signed_in: 'Bitte zuerst anmelden.',
 };
 
 export function friendlyError(error: unknown): string {

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { LegalLinks } from '@/components/LegalLinks';
 import { Button, TextField, text } from '@/components/ui';
 import { friendlyError } from '@/lib/errors';
 import { supabase } from '@/lib/supabase';
@@ -90,6 +91,10 @@ export default function Login() {
                 onSubmitEditing={sendCode}
               />
               <Button title="Code anfordern" onPress={sendCode} loading={busy} />
+              <Text style={text.muted}>
+                Mit der Anmeldung nimmst du am Bonusprogramm teil. Wie wir mit deinen Daten umgehen, steht in
+                der Datenschutzerklärung.
+              </Text>
             </>
           ) : (
             <>
@@ -122,6 +127,7 @@ export default function Login() {
           )}
 
           {error && <Text style={text.error}>{error}</Text>}
+          <LegalLinks />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

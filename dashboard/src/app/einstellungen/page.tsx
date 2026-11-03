@@ -45,6 +45,10 @@ export default function Einstellungen() {
           winback_after_days: data.winback_after_days,
           winback_discount_percent: data.winback_discount_percent,
           winback_valid_days: data.winback_valid_days,
+          imprint_owner: data.imprint_owner,
+          imprint_email: data.imprint_email,
+          imprint_vat_id: data.imprint_vat_id,
+          imprint_extra: data.imprint_extra,
         });
         setHours(parseOpeningHours(data.opening_hours));
       });
@@ -92,6 +96,10 @@ export default function Einstellungen() {
         address: clean(form.address),
         phone: clean(form.phone),
         google_review_url: clean(form.google_review_url),
+        imprint_owner: clean(form.imprint_owner),
+        imprint_email: clean(form.imprint_email),
+        imprint_vat_id: clean(form.imprint_vat_id),
+        imprint_extra: clean(form.imprint_extra),
         opening_hours: hours.filter((h) => h.label.trim() || h.hours.trim()),
         updated_at: new Date().toISOString(),
       })
@@ -125,6 +133,32 @@ export default function Einstellungen() {
           <label>
             Link zu Google-Bewertungen (für die Bewertungsanfrage)
             <input type="url" {...text('google_review_url')} placeholder="https://g.page/r/…" />
+          </label>
+        </div>
+      </section>
+
+      <section className="card stack">
+        <h2>Impressum & Datenschutz</h2>
+        <p className="muted">
+          Pflichtangaben für Impressum und Datenschutzerklärung in der App (Adresse und Telefon kommen von oben).
+          Bitte die fertigen Seiten in der App einmal prüfen.
+        </p>
+        <div className="grid-2">
+          <label>
+            Inhaber/in (vollständiger Name oder Firma mit Rechtsform)
+            <input {...text('imprint_owner')} placeholder="Max Mustermann" />
+          </label>
+          <label>
+            Kontakt-E-Mail
+            <input type="email" {...text('imprint_email')} placeholder="salon@gmail.com" />
+          </label>
+          <label>
+            USt-IdNr. (falls vorhanden)
+            <input {...text('imprint_vat_id')} placeholder="DE123456789" />
+          </label>
+          <label>
+            Weitere Angaben (optional, eine Angabe pro Zeile)
+            <textarea rows={3} {...text('imprint_extra')} placeholder={'Eingetragen in die Handwerksrolle der Handwerkskammer …'} />
           </label>
         </div>
       </section>

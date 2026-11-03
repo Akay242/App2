@@ -21,7 +21,7 @@ neue Kunden bringen. Der Inhaber pflegt die App selbst.
 | Bewertungen | Anfrage nach einem Scan. 4–5 Sterne → Weiterleitung zu Google. **Keine** Belohnung für Bewertungen (Google-Richtlinien und UWG) |
 | Inhalte | Preisliste und Leistungen, Salon-Infos mit Anruf-Button |
 | Nicht im Umfang | Online-Terminbuchung, „Freunde werben“ |
-| Plattform | Native App im App Store und bei Google Play |
+| Plattform | **Start als Web-App (PWA)**, kostenlos und ohne App Store. Später zusätzlich native App im App Store und bei Google Play (gleicher Code) |
 | Verwaltung | Admin-Modus in der App (Scannen) und Web-Dashboard (Verwaltung) |
 | Design | Name, Logo und Farben folgen später, bis dahin Platzhalter |
 
@@ -98,7 +98,7 @@ stehen in der Tabelle `salon_settings` und lassen sich später ohne neuen Code �
 - [x] End-to-End-Test: Änderungen im Dashboard erscheinen in der App
 - [ ] **Inhaber:** Dashboard auf Vercel veröffentlichen (siehe SETUP.md)
 
-### Phase 4 – Marketing ✅ (dieser Stand)
+### Phase 4 – Marketing ✅
 - [x] App fragt nach Push-Erlaubnis (mit Erklärung) und speichert den Push-Token, beim Abmelden wird er gelöscht
 - [x] Täglicher Job (pg_cron, 09:00 UTC): Kunden ohne Besuch seit 6 Wochen bekommen einmal pro
       Abwesenheit einen 10-%-Gutschein (14 Tage gültig) und eine Push-Nachricht.
@@ -112,16 +112,30 @@ stehen in der Tabelle `salon_settings` und lassen sich später ohne neuen Code �
 - [x] End-to-End-Test mit nachgebautem Push-Dienst
 - [ ] Test der echten Push-Nachrichten auf dem iPhone (braucht Apple-Entwicklerkonto)
 
-### Phase 5 – Test und Veröffentlichung
-- Testphase mit einigen Stammkunden (TestFlight bzw. interner Google-Play-Test)
-- Impressum, Datenschutzerklärung, Konto-Löschfunktion (Pflicht bei Apple)
-- Store-Texte, Screenshots, App-Icon
+### Phase 5 – Start als Web-App ✅ (dieser Stand)
+- [x] Kunden-App läuft im Browser und ist als Web-App installierbar (Manifest, Icons, iPhone-Hinweis
+      „Zum Home-Bildschirm“, Android „App installieren“)
+- [x] Admin-Scanner mit der Browser-Kamera (auch iPhone/Safari); QR-Erkennung vom eigenen Server
+- [x] Impressum und Datenschutzerklärung (Vorlage, Angaben aus dem Dashboard), ohne Login erreichbar
+- [x] Konto löschen in der App (DSGVO, später Pflicht bei Apple); letztes Admin-Konto geschützt
+- [x] Weiterleitung nach dem Login über `redirectTo` (Admin → Scanner, Kunde → Stempelkarte)
+- [x] Hosting-Konfiguration für Vercel (`app/vercel.json`), Platzhalter-Icon
+- [x] End-to-End-Test mit echtem QR-Scan über eine simulierte Kamera; alle früheren Tests weiter grün
+- [ ] **Inhaber:** Supabase einrichten, beide Vercel-Projekte veröffentlichen, Impressumsangaben eintragen,
+      Rechtstexte prüfen (siehe SETUP.md)
+- [ ] Testphase mit einigen Stammkunden
+
+### Phase 6 – App Store und Google Play (später)
+- Apple Developer Program (99 €/Jahr) und Google Play (25 $ einmalig)
+- Push-Nachrichten auf dem iPhone/Android (für die Web-Version optional: Web-Push)
+- Store-Texte, Screenshots, endgültiges App-Icon
 - Einreichung bei Apple und Google
 
 ## 5. Offene Punkte
 
-- Name, Logo und Farben des Salons (vor Phase 5)
+- Name, Logo und Farben des Salons (Platzhalter-Icon „SB“ bis dahin)
+- Web-Push für die Web-Version (optional, eigener Ausbauschritt)
 - Konkretes Extra beim 6. Besuch (in `salon_settings.small_reward_label` einstellbar)
 - Google-Bewertungslink des Salons (Phase 4)
 - Eigener E-Mail-Versand vor dem Start: zunächst über ein Salon-Gmail-Konto (kostenlos), später ggf. eigene Domain
-- Apple-Konto als Organisation: D-U-N-S-Nummer früh beantragen
+- Apple-Konto (Phase 6): als Privatperson schnell, als Organisation mit D-U-N-S-Nummer

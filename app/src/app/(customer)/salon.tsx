@@ -2,7 +2,10 @@ import { useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { Linking, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { LegalLinks } from '@/components/LegalLinks';
 import { Button, Card, Loading, text } from '@/components/ui';
+import { useAuth } from '@/lib/auth';
+import { confirmAsync } from '@/lib/confirm';
 import { friendlyError } from '@/lib/errors';
 import { parseOpeningHours } from '@/lib/format';
 import { supabase } from '@/lib/supabase';
@@ -15,6 +18,9 @@ type Info = Pick<SalonSettings, 'name' | 'address' | 'phone' | 'opening_hours'>;
 export default function Salon() {
   const [info, setInfo] = useState<Info | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const { signOut } = useAuth();
 
   useFocusEffect(
     useCallback(() => {
@@ -34,6 +40,26 @@ export default function Salon() {
   if (!info) return <Loading />;
 
   const hours = parseOpeningHours(info.opening_hours);
+
+  async function deleteAccount() {
+    if (!supabase) return;
+    const ok = await confirmAsync(
+      'Konto wirklich löschen?',
+      'Dein Konto, alle Stempel, Belohnungen und Bewertungen werden sofort und endgültig gelöscht. Das kann nicht rückgängig gemacht werden.',
+      'Endgültig löschen',
+    );
+    if (!ok) return;
+    setDeleting(true);
+    setDeleteError(null);
+    const { error: err } = await supabase.rpc('delete_my_account');
+    if (err) {
+      setDeleting(false);
+      setDeleteError(friendlyError(err));
+      return;
+    }
+    // Konto existiert nicht mehr: nur lokal abmelden (der Server kennt den Nutzer nicht mehr).
+    await supabase.auth.signOut({ scope: 'local' });
+  }
 
   function openMaps() {
     const q = encodeURIComponent(info!.address ?? '');
@@ -72,6 +98,15 @@ export default function Salon() {
           ))}
         </Card>
       )}
+
+      <Card>
+        <Text style={text.heading}>Mein Konto</Text>
+        <Button title="Abmelden" variant="secondary" onPress={signOut} disabled={deleting} />
+        <Button title="Konto löschen" variant="secondary" onPress={deleteAccount} loading={deleting} />
+        {deleteError && <Text style={text.error}>{deleteError}</Text>}
+      </Card>
+
+      <LegalLinks />
     </ScrollView>
   );
 }

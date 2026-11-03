@@ -27,6 +27,19 @@ function RootNavigator() {
   const needsName = loggedIn && !profile?.first_name;
   const ready = loggedIn && !needsName;
 
+  // Wohin gesperrte Seiten weiterleiten (z. B. die Login-Seite direkt nach dem Anmelden).
+  // Ohne explizites Ziel könnte der Router auf einer immer erreichbaren Seite wie dem
+  // Impressum landen.
+  const home = !isSupabaseConfigured
+    ? '/setup'
+    : !loggedIn
+      ? '/login'
+      : needsName
+        ? '/name'
+        : profile?.role === 'admin'
+          ? '/admin'
+          : '/';
+
   return (
     <Stack
       screenOptions={{
@@ -36,26 +49,30 @@ function RootNavigator() {
         contentStyle: { backgroundColor: colors.background },
       }}
     >
-      <Stack.Protected guard={!isSupabaseConfigured}>
+      <Stack.Protected guard={!isSupabaseConfigured} redirectTo={home}>
         <Stack.Screen name="setup" options={{ title: 'Einrichtung' }} />
       </Stack.Protected>
 
-      <Stack.Protected guard={isSupabaseConfigured && !loggedIn}>
+      <Stack.Protected guard={isSupabaseConfigured && !loggedIn} redirectTo={home}>
         <Stack.Screen name="login" options={{ headerShown: false }} />
       </Stack.Protected>
 
-      <Stack.Protected guard={needsName}>
+      <Stack.Protected guard={needsName} redirectTo={home}>
         <Stack.Screen name="name" options={{ title: 'Willkommen' }} />
       </Stack.Protected>
 
-      <Stack.Protected guard={ready && profile?.role === 'customer'}>
+      <Stack.Protected guard={ready && profile?.role === 'customer'} redirectTo={home}>
         <Stack.Screen name="(customer)" options={{ headerShown: false }} />
       </Stack.Protected>
 
-      <Stack.Protected guard={ready && profile?.role === 'admin'}>
+      <Stack.Protected guard={ready && profile?.role === 'admin'} redirectTo={home}>
         <Stack.Screen name="admin/index" options={{ title: 'QR-Code scannen' }} />
         <Stack.Screen name="admin/result" options={{ title: 'Besuch erfasst' }} />
       </Stack.Protected>
+
+      {/* Immer erreichbar, auch ohne Anmeldung. */}
+      <Stack.Screen name="impressum" options={{ title: 'Impressum' }} />
+      <Stack.Screen name="datenschutz" options={{ title: 'Datenschutz' }} />
     </Stack>
   );
 }

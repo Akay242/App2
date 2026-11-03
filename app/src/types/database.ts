@@ -33,6 +33,10 @@ export type SalonSettings = {
   winback_after_days: number;
   winback_discount_percent: number;
   winback_valid_days: number;
+  imprint_owner: string | null;
+  imprint_email: string | null;
+  imprint_vat_id: string | null;
+  imprint_extra: string | null;
   updated_at: string;
 };
 
@@ -168,6 +172,7 @@ export type Database = {
       admin_stats: { Args: Record<string, never>; Returns: Json };
       admin_send_push: { Args: { p_title: string; p_body: string }; Returns: PushCampaign };
       admin_push_audience: { Args: Record<string, never>; Returns: number };
+      delete_my_account: { Args: Record<string, never>; Returns: undefined };
     };
     Enums: {
       user_role: UserRole;

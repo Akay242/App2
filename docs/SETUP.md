@@ -1,9 +1,10 @@
 # Einrichtung – was der Inhaber erledigen muss
 
-Diese Schritte kann nur der Inhaber selbst machen, weil sie eigene Konten und
-Zahlungsdaten brauchen. Für Phase 2 reichen die Schritte 1 und 2. Die Store-Konten
-(Schritte 3 und 4) werden erst in Phase 5 gebraucht, sollten aber **früh beantragt**
-werden, weil die Prüfung dauern kann.
+Diese Schritte kann nur der Inhaber selbst machen, weil sie eigene Konten brauchen.
+
+**Start als Web-App (kostenlos):** Schritte 1, 5, 6 und 9 – damit läuft das komplette
+System im Browser, ohne App Store. Die Store-Konten (Schritte 3 und 4) braucht es erst,
+wenn die App später zusätzlich in den App Store / Google Play soll.
 
 ## 1. Supabase-Projekt (kostenlos)
 
@@ -15,7 +16,8 @@ werden, weil die Prüfung dauern kann.
       (`20261102000000_initial_schema.sql`, `20261103000000_admin_overview.sql`,
       `20261104000000_marketing.sql`, …)
       Falls bei der dritten Datei ein Fehler zu `pg_cron` oder `pg_net` kommt: unter
-      **Database → Extensions** die Erweiterungen `pg_cron` und `pg_net` einschalten und die Datei erneut ausführen.
+      **Database → Extensions** die Erweiterungen `pg_cron` und `pg_net` einschalten und die Datei erneut ausführen
+      (`…_marketing.sql`), danach `20261105000000_legal_account_deletion.sql`.
    2. den Inhalt von `supabase/seed.sql` (Beispiel-Preisliste und Platzhalter-Adresse, optional)
 5. **E-Mail-Vorlagen auf Code umstellen** (die App fragt einen 6-stelligen Code ab, keinen Link):
    Links **Authentication → Emails → Templates**, dann bei **Confirm signup** und bei **Magic link**
@@ -108,8 +110,38 @@ Das richtet Expo beim ersten iOS-Build automatisch ein, dafür ist das **Apple D
 Program** nötig (Schritt 4). Für Android ist später ein kostenloser Firebase-Schlüssel nötig;
 das erledigen wir vor dem Android-Build.
 
-## 8. Später (Phase 5)
+## 8. Impressum und Datenschutz
 
-- Link zu den Google-Bewertungen des Salons (Google Unternehmensprofil →
-  „Rezensionen erhalten“).
-- Impressum und Datenschutzerklärung, z. B. über den kostenlosen Generator von e-recht24.
+Im Dashboard unter **Einstellungen → Impressum & Datenschutz** Inhaber/in, Kontakt-E-Mail
+und ggf. USt-IdNr. eintragen. Die App erzeugt daraus die Seiten **Impressum** und
+**Datenschutz** (Links auf der Anmeldeseite und im Reiter „Salon“).
+
+Die Texte sind eine sorgfältige Vorlage, aber **keine Rechtsberatung**. Bitte vor dem Start
+einmal prüfen (lassen), z. B. mit dem kostenlosen Generator von e-recht24 vergleichen.
+Bei Supabase und Vercel kann man den Vertrag zur Auftragsverarbeitung (DPA) in den
+Konto-Einstellungen abschließen.
+
+## 9. Kunden-App als Web-App veröffentlichen (kostenlos)
+
+1. Bei <https://vercel.com> **Add New → Project**, wieder das Repository `App2` wählen
+   (ein zweites Projekt neben dem Dashboard).
+2. **Root Directory**: `app`. Die übrigen Einstellungen kommen aus `app/vercel.json`.
+3. Unter **Environment Variables** eintragen:
+   - `EXPO_PUBLIC_SUPABASE_URL` = Project URL aus Supabase
+   - `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY` = Publishable key aus Supabase
+4. **Deploy**. Die App ist dann unter einer Adresse wie `salon-bonus.vercel.app` erreichbar.
+   Den Namen kannst du unter **Settings → Domains** ändern (z. B. `barbershop-akay.vercel.app`).
+5. In Supabase unter **Authentication → URL Configuration** die **Site URL** auf diese
+   Adresse setzen.
+
+**So nutzen es Kunden:** Adresse öffnen (z. B. über einen QR-Code-Aufsteller an der Kasse),
+mit E-Mail anmelden, auf dem iPhone in Safari „Teilen → Zum Home-Bildschirm“. Dann startet
+die Stempelkarte wie eine App.
+
+**So nutzt du es:** Dieselbe Adresse auf deinem iPhone öffnen und mit deinem Admin-Konto
+anmelden. Der Scanner nutzt die Kamera im Browser (beim ersten Mal erlauben).
+
+**Einschränkung der Web-Version:** Push-Nachrichten gibt es in der Web-Version (noch) nicht.
+Rückhol-Gutscheine werden trotzdem automatisch erzeugt und erscheinen beim nächsten Öffnen
+in der App. Push-Aktionen aus dem Dashboard erreichen nur Nutzer der späteren
+App-Store-Version.

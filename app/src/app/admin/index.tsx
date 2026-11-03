@@ -4,6 +4,7 @@ import { useCallback, useRef, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Button, Card, Loading, text } from '@/components/ui';
+import '@/lib/barcodeSetup';
 import { useAuth } from '@/lib/auth';
 import { friendlyError } from '@/lib/errors';
 import { supabase } from '@/lib/supabase';

@@ -63,11 +63,15 @@ Einlösen, Kunde sieht den neuen Stand und darf selbst nicht scannen.
 Nicht-Admins, Kennzahlen, Kundenliste, Leistung anlegen und Preis ändern, Einstellungen
 speichern (inkl. Eingabeprüfung) und ob die App die Änderungen in „Preise“ und „Salon“ zeigt.
 
+`scripts/e2e-web-start.js` testet die Web-App: echter QR-Scan über eine simulierte Kamera
+(Chromium bekommt den QR-Code als Kamerabild), Impressum/Datenschutz ohne Login,
+Installations-Hinweis auf dem iPhone und Konto löschen. Braucht zusätzlich `ffmpeg`.
+
 `scripts/e2e-marketing.js` testet Phase 4 mit einem nachgebauten Expo-Push-Dienst:
 Bewertungsanfrage (gut → Google, schlecht → intern), Rückhol-Gutschein inkl. Push,
 Push-Aktion aus dem Dashboard und die Bewertungsseite.
 
-Alle drei Skripte brauchen Playwright und einen Web-Export von App und Dashboard, z. B.:
+Alle Skripte brauchen Playwright und einen Web-Export von App und Dashboard, z. B.:
 
 ```sh
 (cd app && EXPO_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321 EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<lokal> \
