@@ -11,8 +11,9 @@ werden, weil die Prüfung dauern kann.
 2. Region **Central EU (Frankfurt)** wählen (Datenschutz, kurze Wege).
 3. Ein sicheres Datenbank-Passwort vergeben und gut aufbewahren (nicht in die App!).
 4. Im Projekt links **SQL Editor** öffnen und nacheinander ausführen:
-   1. den Inhalt von `supabase/migrations/20261102000000_initial_schema.sql`
-   2. den Inhalt von `supabase/seed.sql` (Beispiel-Preisliste, optional)
+   1. alle Dateien aus `supabase/migrations/` **in der Reihenfolge ihrer Namen**
+      (`20261102000000_initial_schema.sql`, dann `20261103000000_admin_overview.sql`, …)
+   2. den Inhalt von `supabase/seed.sql` (Beispiel-Preisliste und Platzhalter-Adresse, optional)
 5. **E-Mail-Vorlagen auf Code umstellen** (die App fragt einen 6-stelligen Code ab, keinen Link):
    Links **Authentication → Emails → Templates**, dann bei **Confirm signup** und bei **Magic link**
    jeweils Betreff `Dein Anmeldecode` und als Inhalt den Text aus
@@ -26,9 +27,28 @@ werden, weil die Prüfung dauern kann.
 
 Der eingebaute E-Mail-Versand von Supabase ist nur zum Testen gedacht. Er schickt nur
 sehr wenige E-Mails pro Stunde und nur an Adressen von Mitgliedern deines Supabase-Teams.
-Vor dem Start mit echten Kunden richten wir deshalb einen eigenen Versand ein, z. B.
-**Resend** (kostenlos bis 3.000 E-Mails/Monat): **Authentication → Emails → SMTP Settings**.
-Dafür brauchst du eine eigene Domain für den Absender (z. B. `info@dein-salon.de`).
+Vor dem Start mit echten Kunden brauchen wir einen eigenen Versand.
+
+**Ohne eigene Domain: Gmail (kostenlos, bis ca. 500 E-Mails pro Tag)**
+
+1. Ein Gmail-Konto für den Salon anlegen (z. B. `barbershop.akay@gmail.com`),
+   damit die Codes nicht von deiner privaten Adresse kommen.
+2. In diesem Konto die **Bestätigung in zwei Schritten** einschalten
+   (Google-Konto → Sicherheit).
+3. Unter <https://myaccount.google.com/apppasswords> ein **App-Passwort** erzeugen
+   (Name z. B. „Supabase“). Es ist 16 Zeichen lang.
+4. In Supabase: **Authentication → Emails → SMTP Settings**, „Enable custom SMTP“:
+   - Host: `smtp.gmail.com`, Port: `587`
+   - Benutzername: die Gmail-Adresse
+   - Passwort: das App-Passwort
+   - Absender-Adresse: die Gmail-Adresse, Absender-Name: Name des Salons
+5. Unter **Authentication → Rate Limits** das Limit für E-Mails z. B. auf 100 pro Stunde setzen.
+
+Das App-Passwort gibst du nur in Supabase ein, nirgendwo sonst (auch nicht im Chat).
+
+**Später mit eigener Domain:** Eine `.de`-Domain kostet ca. 5–15 € pro Jahr. Damit wirken die
+E-Mails professioneller (`info@dein-salon.de`), und ein Dienst wie Resend
+(kostenlos bis 3.000 E-Mails pro Monat) kann sie verschicken.
 
 ### Sich selbst zum Admin machen
 
@@ -60,7 +80,18 @@ Ein Organisationskonto vermeidet diese Hürde.
 2. Danach unter <https://developer.apple.com/programs/enroll/> als **Organisation**
    anmelden. Im App Store steht dann der Salon-Name statt deines Privatnamens.
 
-## 5. Später (Phase 4/5)
+## 5. Web-Dashboard veröffentlichen (kostenlos, ab Phase 3)
+
+1. Auf <https://vercel.com> mit deinem GitHub-Konto anmelden.
+2. **Add New → Project**, das Repository `App2` auswählen.
+3. **Root Directory**: `dashboard` (Framework wird automatisch als Next.js erkannt).
+4. Unter **Environment Variables** eintragen:
+   - `NEXT_PUBLIC_SUPABASE_URL` = Project URL aus Supabase
+   - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` = Publishable key aus Supabase
+5. **Deploy**. Danach ist das Dashboard unter einer Adresse wie `app2-xyz.vercel.app` erreichbar.
+6. Anmelden kann sich nur, wer in der App registriert ist **und** Admin ist (siehe oben).
+
+## 6. Später (Phase 4/5)
 
 - Link zu den Google-Bewertungen des Salons (Google Unternehmensprofil →
   „Rezensionen erhalten“).

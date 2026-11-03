@@ -35,7 +35,7 @@ stehen in der Tabelle `salon_settings` und lassen sich später ohne neuen Code �
 | App (iOS + Android aus einem Code) | React Native mit Expo (SDK 58), Expo Router, TypeScript | 0 € |
 | Backend: Datenbank, Login, Rechte, Zeitpläne | Supabase (PostgreSQL, Gratis-Tarif) | 0 € |
 | Push-Nachrichten | Expo Push Service | 0 € |
-| Web-Dashboard | Next.js auf Vercel (Gratis-Tarif) | 0 € |
+| Web-Dashboard | Next.js (statischer Export) auf Vercel (Gratis-Tarif) | 0 € |
 | App-Builds und Store-Upload | EAS Build/Submit (Gratis-Kontingent) | 0 € |
 | Google Play Konto | einmalig | 25 $ |
 | Apple Developer Programm | jährlich | 99 € |
@@ -78,7 +78,7 @@ stehen in der Tabelle `salon_settings` und lassen sich später ohne neuen Code �
 - [x] Lokaler Datenbank-Test (`supabase/tests/`)
 - [ ] **Inhaber:** Konten anlegen, siehe [SETUP.md](SETUP.md)
 
-### Phase 2 – Kernfunktion ✅ (dieser Stand)
+### Phase 2 – Kernfunktion ✅
 - [x] Registrierung und Login per E-Mail-Code, danach einmalig Namen abfragen
 - [x] Kunden-Startseite: persönlicher QR-Code und Stempelkarte (x von 12), aktualisiert sich alle 10 s
 - [x] Liste der freigeschalteten Belohnungen
@@ -87,10 +87,16 @@ stehen in der Tabelle `salon_settings` und lassen sich später ohne neuen Code �
 - [x] Lokales Supabase (`supabase/config.toml`) mit deutschen Code-E-Mails, End-to-End-Test im Browser
 - [ ] Erster Test auf echten Handys (braucht Supabase-Zugangsdaten und einen Development-Build)
 
-### Phase 3 – Inhalte und Web-Dashboard
-- Preisliste und Salon-Infos (Adresse, Öffnungszeiten, Anruf-Button) in der App
-- Web-Dashboard: Login für den Admin, Leistungen und Preise bearbeiten,
-  Salon-Einstellungen und Bonus-Regeln, Kundenliste mit Besuchen
+### Phase 3 – Inhalte und Web-Dashboard ✅ (dieser Stand)
+- [x] App: Reiter „Karte“, „Preise“, „Salon“
+- [x] Preisliste nach Kategorien, Salon-Infos mit Anruf-Button, Kartenlink und Öffnungszeiten
+- [x] Web-Dashboard (Next.js, statisch, Login per E-Mail-Code, nur für Admins)
+- [x] Übersicht mit Kennzahlen (Besuche, Kunden, aktive Kunden, eingelöste Belohnungen)
+- [x] Kundenliste mit Suche, Besuchen, Stempelstand, offenen Belohnungen
+- [x] Leistungen anlegen, bearbeiten, ausblenden, löschen
+- [x] Einstellungen: Salon-Daten, Öffnungszeiten, Bonus-Regeln, Rückholaktion
+- [x] End-to-End-Test: Änderungen im Dashboard erscheinen in der App
+- [ ] **Inhaber:** Dashboard auf Vercel veröffentlichen (siehe SETUP.md)
 
 ### Phase 4 – Marketing
 - Push-Berechtigung und Push-Token speichern
@@ -110,5 +116,5 @@ stehen in der Tabelle `salon_settings` und lassen sich später ohne neuen Code �
 - Name, Logo und Farben des Salons (vor Phase 5)
 - Konkretes Extra beim 6. Besuch (in `salon_settings.small_reward_label` einstellbar)
 - Google-Bewertungslink des Salons (Phase 4)
-- Eigener E-Mail-Versand (SMTP, z. B. Resend) und Absender-Domain vor dem Start
+- Eigener E-Mail-Versand vor dem Start: zunächst über ein Salon-Gmail-Konto (kostenlos), später ggf. eigene Domain
 - Apple-Konto als Organisation: D-U-N-S-Nummer früh beantragen

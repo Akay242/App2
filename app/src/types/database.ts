@@ -106,6 +106,30 @@ export type RecordVisitResult = {
   available_rewards: Pick<Reward, 'id' | 'type' | 'label' | 'discount_percent' | 'valid_until'>[];
 };
 
+/** Zeile aus admin_customer_overview() */
+export type CustomerOverview = {
+  id: string;
+  first_name: string | null;
+  last_name: string | null;
+  email: string | null;
+  role: UserRole;
+  created_at: string;
+  last_visit_at: string | null;
+  total_visits: number;
+  stamps_in_cycle: number;
+  available_rewards: number;
+};
+
+/** Antwort von admin_stats() */
+export type AdminStats = {
+  customers_total: number;
+  customers_new_30d: number;
+  customers_active_42d: number;
+  visits_today: number;
+  visits_30d: number;
+  rewards_redeemed_30d: number;
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -125,6 +149,8 @@ export type Database = {
       };
       record_visit: { Args: { p_qr_token: string }; Returns: Json };
       redeem_reward: { Args: { p_reward_id: string }; Returns: Reward };
+      admin_customer_overview: { Args: Record<string, never>; Returns: CustomerOverview[] };
+      admin_stats: { Args: Record<string, never>; Returns: Json };
     };
     Enums: {
       user_role: UserRole;

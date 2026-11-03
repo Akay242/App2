@@ -10,6 +10,7 @@ Belohnungen, Rückhol-Gutscheine per Push, Preisliste und Google-Bewertungen.
 
 ```
 app/        Expo-App (iOS + Android), React Native + TypeScript
+dashboard/  Web-Dashboard für den Inhaber (Next.js, statischer Export)
 supabase/   Datenbankschema, Beispieldaten, Tests
 docs/       Plan und Anleitungen
 scripts/    Hilfsskripte (End-to-End-Test)
@@ -24,7 +25,16 @@ cp .env.example .env.local   # Supabase-Werte eintragen
 npm start                    # QR-Code mit Expo Go scannen
 ```
 
-Prüfen vor jedem Commit:
+## Dashboard starten (Entwicklung)
+
+```sh
+cd dashboard
+npm install
+cp .env.example .env.local   # gleiche Supabase-Werte wie in der App
+npm run dev                  # http://localhost:3000
+```
+
+Prüfen vor jedem Commit (in `app/` und `dashboard/`):
 
 ```sh
 npm run typecheck
@@ -48,3 +58,7 @@ Die Anmeldecodes landen lokal im Mailpit-Postfach unter <http://127.0.0.1:54324>
 `scripts/e2e-web.js` spielt den Ablauf im Browser durch: Registrierung, Namen eingeben,
 Admin scannt (per RPC, da es headless keine Kamera gibt), 6. Stempel mit Belohnung,
 Einlösen, Kunde sieht den neuen Stand und darf selbst nicht scannen.
+
+`scripts/e2e-dashboard.js` testet das Dashboard: Abweisung von unbekannten E-Mails und
+Nicht-Admins, Kennzahlen, Kundenliste, Leistung anlegen und Preis ändern, Einstellungen
+speichern (inkl. Eingabeprüfung) und ob die App die Änderungen in „Preise“ und „Salon“ zeigt.

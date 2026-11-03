@@ -1,6 +1,6 @@
-import { Stack, useFocusEffect } from 'expo-router';
+import { useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 
 import { RewardItem } from '@/components/RewardItem';
@@ -13,7 +13,7 @@ import type { Reward, SalonSettings } from '@/types/database';
 import { colors, spacing } from '@/theme';
 
 type Data = {
-  settings: Pick<SalonSettings, 'name' | 'small_reward_at' | 'small_reward_label' | 'free_cut_label'>;
+  settings: Pick<SalonSettings, 'small_reward_at' | 'small_reward_label' | 'free_cut_label'>;
   stamps: number;
   stampsPerCycle: number;
   totalVisits: number;
@@ -24,7 +24,7 @@ type Data = {
 const POLL_MS = 10_000;
 
 export default function CustomerHome() {
-  const { profile, signOut } = useAuth();
+  const { profile } = useAuth();
   const [data, setData] = useState<Data | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
@@ -35,7 +35,7 @@ export default function CustomerHome() {
     const [settings, progress, rewards] = await Promise.all([
       supabase
         .from('salon_settings')
-        .select('name, small_reward_at, small_reward_label, free_cut_label')
+        .select('small_reward_at, small_reward_label, free_cut_label')
         .single(),
       supabase.rpc('stamp_progress', { p_customer_id: profile.id }),
       supabase
@@ -83,17 +83,6 @@ export default function CustomerHome() {
       contentContainerStyle={styles.container}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.accent} />}
     >
-      <Stack.Screen
-        options={{
-          title: data?.settings.name ?? 'Meine Stempelkarte',
-          headerRight: () => (
-            <Pressable onPress={signOut} hitSlop={12} accessibilityRole="button">
-              <Text style={{ color: colors.textMuted }}>Abmelden</Text>
-            </Pressable>
-          ),
-        }}
-      />
-
       <Text style={text.title}>Hallo {profile.first_name}!</Text>
 
       <Card style={styles.qrCard}>

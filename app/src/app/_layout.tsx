@@ -49,7 +49,7 @@ function RootNavigator() {
       </Stack.Protected>
 
       <Stack.Protected guard={ready && profile?.role === 'customer'}>
-        <Stack.Screen name="index" options={{ title: 'Meine Stempelkarte' }} />
+        <Stack.Screen name="(customer)" options={{ headerShown: false }} />
       </Stack.Protected>
 
       <Stack.Protected guard={ready && profile?.role === 'admin'}>
